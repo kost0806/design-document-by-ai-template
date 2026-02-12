@@ -1,4 +1,4 @@
-# AI 설계 문서 로컬 서버 실행 스크립트 (PowerShell)
+# AI Design Documentation Local Server Script (PowerShell)
 
 param(
     [Parameter(Position=0)]
@@ -7,7 +7,6 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# 색상 출력 함수
 function Write-ColorOutput($ForegroundColor) {
     $fc = $host.UI.RawUI.ForegroundColor
     $host.UI.RawUI.ForegroundColor = $ForegroundColor
@@ -18,146 +17,144 @@ function Write-ColorOutput($ForegroundColor) {
 }
 
 function Show-Banner {
-    Write-ColorOutput Cyan @"
-╔═══════════════════════════════════════════╗
-║   AI 설계 문서 로컬 서버 (Docker)        ║
-╚═══════════════════════════════════════════╝
-"@
+    Write-ColorOutput Cyan "================================================"
+    Write-ColorOutput Cyan "   AI Design Docs Local Server (Docker)"
+    Write-ColorOutput Cyan "================================================"
 }
 
 function Show-Help {
     Show-Banner
     Write-Host ""
-    Write-ColorOutput Yellow "사용법:"
-    Write-Host "  .\run-docs.ps1 [명령어]"
+    Write-ColorOutput Yellow "Usage:"
+    Write-Host "  .\run-docs.ps1 [command]"
     Write-Host ""
-    Write-ColorOutput Yellow "명령어:"
-    Write-Host "  start     - 문서 서버 시작 (기본값)"
-    Write-Host "  stop      - 문서 서버 중지"
-    Write-Host "  restart   - 문서 서버 재시작"
-    Write-Host "  logs      - 로그 보기"
-    Write-Host "  build     - Docker 이미지 다시 빌드"
-    Write-Host "  clean     - 컨테이너 및 볼륨 삭제"
-    Write-Host "  status    - 컨테이너 상태 확인"
-    Write-Host "  help      - 도움말 표시"
+    Write-ColorOutput Yellow "Commands:"
+    Write-Host "  start     - Start the documentation server (default)"
+    Write-Host "  stop      - Stop the documentation server"
+    Write-Host "  restart   - Restart the documentation server"
+    Write-Host "  logs      - View server logs"
+    Write-Host "  build     - Rebuild Docker image"
+    Write-Host "  clean     - Remove containers and volumes"
+    Write-Host "  status    - Check container status"
+    Write-Host "  help      - Show this help message"
     Write-Host ""
-    Write-ColorOutput Yellow "예시:"
-    Write-Host "  .\run-docs.ps1            # 서버 시작"
-    Write-Host "  .\run-docs.ps1 stop       # 서버 중지"
-    Write-Host "  .\run-docs.ps1 logs       # 로그 보기"
+    Write-ColorOutput Yellow "Examples:"
+    Write-Host "  .\run-docs.ps1            # Start server"
+    Write-Host "  .\run-docs.ps1 stop       # Stop server"
+    Write-Host "  .\run-docs.ps1 logs       # View logs"
     Write-Host ""
 }
 
 function Start-Server {
     Show-Banner
-    Write-ColorOutput Green "📦 Docker 컨테이너 시작 중..."
+    Write-ColorOutput Green "Starting Docker container..."
 
-    # Docker가 설치되어 있는지 확인
+    # Check if Docker is installed
     try {
         docker --version | Out-Null
     } catch {
-        Write-ColorOutput Red "❌ Docker가 설치되어 있지 않습니다."
-        Write-Host "Docker Desktop을 설치해주세요: https://www.docker.com/products/docker-desktop"
+        Write-ColorOutput Red "ERROR: Docker is not installed."
+        Write-Host "Please install Docker Desktop: https://www.docker.com/products/docker-desktop"
         exit 1
     }
 
-    # Docker Compose 실행
+    # Run Docker Compose
     docker-compose up -d
 
     if ($LASTEXITCODE -eq 0) {
         Write-Host ""
-        Write-ColorOutput Green "✅ 서버가 시작되었습니다!"
+        Write-ColorOutput Green "SUCCESS: Server is running!"
         Write-Host ""
-        Write-ColorOutput Cyan "📖 문서 보기:"
+        Write-ColorOutput Cyan "View documentation at:"
         Write-ColorOutput Yellow "   http://localhost:4000"
         Write-Host ""
-        Write-ColorOutput Cyan "💡 팁:"
-        Write-Host "   - 문서를 수정하면 자동으로 새로고침됩니다 (LiveReload)"
-        Write-Host "   - 로그 보기: .\run-docs.ps1 logs"
-        Write-Host "   - 서버 중지: .\run-docs.ps1 stop"
+        Write-ColorOutput Cyan "Tips:"
+        Write-Host "   - Documents will auto-reload on changes (LiveReload)"
+        Write-Host "   - View logs: .\run-docs.ps1 logs"
+        Write-Host "   - Stop server: .\run-docs.ps1 stop"
         Write-Host ""
     } else {
-        Write-ColorOutput Red "❌ 서버 시작 실패"
+        Write-ColorOutput Red "ERROR: Failed to start server"
         exit 1
     }
 }
 
 function Stop-Server {
     Show-Banner
-    Write-ColorOutput Yellow "🛑 Docker 컨테이너 중지 중..."
+    Write-ColorOutput Yellow "Stopping Docker container..."
     docker-compose down
 
     if ($LASTEXITCODE -eq 0) {
-        Write-ColorOutput Green "✅ 서버가 중지되었습니다."
+        Write-ColorOutput Green "SUCCESS: Server stopped."
     } else {
-        Write-ColorOutput Red "❌ 서버 중지 실패"
+        Write-ColorOutput Red "ERROR: Failed to stop server"
         exit 1
     }
 }
 
 function Restart-Server {
     Show-Banner
-    Write-ColorOutput Yellow "🔄 서버 재시작 중..."
+    Write-ColorOutput Yellow "Restarting server..."
     docker-compose restart
 
     if ($LASTEXITCODE -eq 0) {
-        Write-ColorOutput Green "✅ 서버가 재시작되었습니다."
+        Write-ColorOutput Green "SUCCESS: Server restarted."
         Write-ColorOutput Yellow "   http://localhost:4000"
     } else {
-        Write-ColorOutput Red "❌ 서버 재시작 실패"
+        Write-ColorOutput Red "ERROR: Failed to restart server"
         exit 1
     }
 }
 
 function Show-Logs {
     Show-Banner
-    Write-ColorOutput Cyan "📋 로그 표시 중... (Ctrl+C로 종료)"
+    Write-ColorOutput Cyan "Showing logs... (Press Ctrl+C to exit)"
     Write-Host ""
     docker-compose logs -f
 }
 
 function Build-Image {
     Show-Banner
-    Write-ColorOutput Yellow "🔨 Docker 이미지 빌드 중..."
+    Write-ColorOutput Yellow "Building Docker image..."
     docker-compose build --no-cache
 
     if ($LASTEXITCODE -eq 0) {
-        Write-ColorOutput Green "✅ 이미지 빌드 완료"
+        Write-ColorOutput Green "SUCCESS: Image built successfully"
     } else {
-        Write-ColorOutput Red "❌ 이미지 빌드 실패"
+        Write-ColorOutput Red "ERROR: Failed to build image"
         exit 1
     }
 }
 
 function Clean-All {
     Show-Banner
-    Write-ColorOutput Yellow "🧹 컨테이너 및 볼륨 삭제 중..."
+    Write-ColorOutput Yellow "Cleaning up containers and volumes..."
 
-    # 확인
-    $confirmation = Read-Host "모든 컨테이너와 볼륨을 삭제하시겠습니까? (y/N)"
+    # Confirmation
+    $confirmation = Read-Host "Remove all containers and volumes? (y/N)"
     if ($confirmation -ne 'y') {
-        Write-ColorOutput Yellow "취소되었습니다."
+        Write-ColorOutput Yellow "Cancelled."
         return
     }
 
     docker-compose down -v
 
     if ($LASTEXITCODE -eq 0) {
-        Write-ColorOutput Green "✅ 정리 완료"
+        Write-ColorOutput Green "SUCCESS: Cleanup complete"
     } else {
-        Write-ColorOutput Red "❌ 정리 실패"
+        Write-ColorOutput Red "ERROR: Cleanup failed"
         exit 1
     }
 }
 
 function Show-Status {
     Show-Banner
-    Write-ColorOutput Cyan "📊 컨테이너 상태:"
+    Write-ColorOutput Cyan "Container status:"
     Write-Host ""
     docker-compose ps
 }
 
-# 명령어 처리
+# Command handling
 switch ($Command.ToLower()) {
     "start" { Start-Server }
     "stop" { Stop-Server }
@@ -168,7 +165,7 @@ switch ($Command.ToLower()) {
     "status" { Show-Status }
     "help" { Show-Help }
     default {
-        Write-ColorOutput Red "❌ 알 수 없는 명령어: $Command"
+        Write-ColorOutput Red "ERROR: Unknown command: $Command"
         Write-Host ""
         Show-Help
         exit 1
