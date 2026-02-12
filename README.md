@@ -97,7 +97,8 @@ AiWorkTemplate/
 │   ├── 02-dld-prompt.md
 │   └── 03-test-strategy-prompt.md
 ├── .github/workflows/             # GitHub Actions
-│   └── deploy-pages.yml
+│   ├── deploy-pages.yml           # GitHub Pages 배포
+│   └── llm-agent.yml              # LLM Agent 자동화
 └── README.md
 ```
 
@@ -150,6 +151,140 @@ graph TD
 - **Claude** (Anthropic): 긴 문서 작성, 코드 생성
 - **ChatGPT** (OpenAI): 다양한 설계 아이디어
 - **GitHub Copilot**: 코드 기반 제안
+
+## 🤖 GitHub Issue 기반 LLM Agent 자동화
+
+GitHub Issue에 특정 Label을 달면 자동으로 LLM Agent가 실행되어 결과를 Comment로 작성합니다.
+
+### Label 형식
+
+- **Claude**: `claude:<model-id>` (예: `claude:claude-sonnet-4`, `claude:claude-opus-4`)
+- **Gemini**: `gemini:<model-id>` (예: `gemini:gemini-pro`, `gemini:gemini-flash`)
+
+Label의 모델 ID가 그대로 API에 전달됩니다.
+
+### 사용 가능한 모델
+
+#### Claude Models
+| Label | 설명 |
+|-------|------|
+| `claude:claude-sonnet-4` | 균형잡힌 성능과 속도 (권장, 최신 버전) |
+| `claude:claude-opus-4` | 최고 성능, 복잡한 작업 (최신 버전) |
+| `claude:claude-haiku-4` | 빠른 응답, 간단한 작업 (최신 버전) |
+| `claude:claude-3-5-sonnet` | Claude 3.5 Sonnet (최신 버전) |
+| `claude:claude-3-opus` | Claude 3 Opus (최신 버전) |
+| `claude:claude-3-haiku` | Claude 3 Haiku (최신 버전) |
+
+**특정 날짜 버전 지정:**
+- `claude:claude-sonnet-4-20250514`
+- `claude:claude-3-5-sonnet-20241022`
+
+전체 모델 목록: [Anthropic Models](https://docs.anthropic.com/en/docs/about-claude/models)
+
+#### Gemini Models
+| Label | 설명 |
+|-------|------|
+| `gemini:gemini-pro` | 범용 모델 (권장) |
+| `gemini:gemini-flash` | 빠른 응답 |
+| `gemini:gemini-2.0-flash-exp` | 실험적 최신 모델 |
+| `gemini:gemini-1.5-pro` | 긴 컨텍스트 지원 |
+| `gemini:gemini-1.5-flash` | 빠른 응답 (1.5 세대) |
+
+전체 모델 목록: [Google AI Models](https://ai.google.dev/models/gemini)
+
+### 설정 방법
+
+#### 1. Repository Secrets 설정
+
+GitHub 레포지토리 **Settings → Secrets and variables → Actions → New repository secret**에서 다음 시크릿을 추가하세요:
+
+**Claude 사용 시:**
+- Secret name: `ANTHROPIC_API_KEY`
+- Secret value: Anthropic API Key ([여기서 발급](https://console.anthropic.com/settings/keys))
+- 참고: Anthropic API를 직접 사용합니다
+
+**Gemini 사용 시:**
+- Secret name: `GOOGLE_API_KEY`
+- Secret value: Google AI Studio API Key ([여기서 발급](https://aistudio.google.com/app/apikey))
+
+#### 2. GitHub Labels 생성
+
+레포지토리 **Issues → Labels**에서 자주 사용할 Label을 미리 생성하세요:
+
+**Claude Labels (색상: #7C3AED 추천):**
+- `claude:claude-sonnet-4`
+- `claude:claude-opus-4`
+- `claude:claude-haiku-4`
+
+**Gemini Labels (색상: #4285F4 추천):**
+- `gemini:gemini-pro`
+- `gemini:gemini-flash`
+- `gemini:gemini-2.0-flash-exp`
+
+필요한 Label만 선택적으로 생성하면 됩니다.
+
+### 사용 방법
+
+1. **Issue 생성**: 분석하고 싶은 내용을 Issue Description에 작성
+2. **Label 추가**: 원하는 모델의 Label 추가 (예: `claude:sonnet-4`, `gemini:pro`)
+3. **자동 실행**: GitHub Actions가 자동으로 LLM을 실행
+4. **결과 확인**: Issue Comment에 LLM 응답이 자동으로 작성됨
+
+### 예시
+
+#### 예시 1: Claude Sonnet 사용
+```markdown
+### Issue Title
+요구사항 분석: 온라인 도서 대여 시스템
+
+### Issue Description
+다음 프로젝트의 요구사항을 분석해주세요:
+
+- 프로젝트명: 도서 대여 플랫폼
+- 목적: 온라인 도서 검색 및 대여
+- 대상 사용자: 일반 독서가, 학생
+- 핵심 기능:
+  1. 도서 검색 및 필터링
+  2. 도서 대여 및 반납
+  3. 사용자 리뷰 작성
+
+기능 요구사항과 비기능 요구사항을 작성해주세요.
+```
+
+**Label 추가**: `claude:claude-sonnet-4`
+
+#### 예시 2: Gemini Pro 사용
+```markdown
+### Issue Title
+성능 최적화 방안 분석
+
+### Issue Description
+현재 시스템의 병목 구간을 분석하고 최적화 방안을 제시해주세요.
+
+- 현재 응답 시간: 500ms
+- 목표: 200ms 이하
+- 주요 트래픽: API 호출 10,000 req/s
+```
+
+**Label 추가**: `gemini:gemini-pro`
+
+#### 예시 3: 빠른 응답이 필요한 경우
+```markdown
+### Issue Title
+간단한 질문
+
+### Issue Description
+이 에러 메시지가 무엇을 의미하나요?
+```
+
+**Label 추가**: `claude:claude-haiku-4` 또는 `gemini:gemini-flash`
+
+### 주의사항
+
+- API 사용량에 따라 비용이 발생할 수 있습니다
+- 공개 레포지토리에서는 누구나 Label을 추가할 수 있으므로, 필요시 Issue 권한을 제한하세요
+- LLM 응답이 매우 긴 경우 일부가 잘릴 수 있습니다 (최대 60,000자)
+- 잘못된 모델명을 사용하면 GitHub Actions에서 에러가 발생합니다 (Issue Comment에 에러 메시지 표시됨)
 
 ## 🛠️ 커스터마이징
 
