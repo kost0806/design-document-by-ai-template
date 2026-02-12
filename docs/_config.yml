@@ -67,12 +67,12 @@ exclude:
 # Just the Docs 테마 커스터마이징
 aux_links:
   "GitHub에서 보기":
-    - "//github.com/kimmi1206/design-document-by-ai-template"
+    - "//github.com/kost0806/design-document-by-ai-template"
 
 # 헤더 설정
 gh_edit_link: true
 gh_edit_link_text: "이 페이지 수정하기"
-gh_edit_repository: "https://github.com/kimmi1206/design-document-by-ai-template"
+gh_edit_repository: "https://github.com/kost0806/design-document-by-ai-template"
 gh_edit_branch: "main"
 gh_edit_view_mode: "edit"
 
