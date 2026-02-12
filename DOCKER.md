@@ -199,7 +199,7 @@ docker-compose build --no-cache
 ## 📁 디렉토리 구조
 
 ```
-AiWorkTemplate/
+design-document-by-ai-template/
 ├── Dockerfile              # Jekyll 이미지 정의
 ├── docker-compose.yaml     # 서비스 구성
 ├── run-docs.ps1           # Windows 스크립트

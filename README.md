@@ -21,8 +21,8 @@ AI를 활용한 체계적인 소프트웨어 설계 문서 관리 템플릿입�
 
 **방법 B: Clone**
 ```bash
-git clone https://github.com/your-username/AiWorkTemplate.git
-cd AiWorkTemplate
+git clone https://github.com/your-username/design-document-by-ai-template.git
+cd design-document-by-ai-template
 ```
 
 ### 2. 로컬에서 문서 보기
@@ -85,7 +85,7 @@ AI (Claude, ChatGPT 등)에게 프롬프트를 전달하고, 생성된 내용을
 ## 📁 프로젝트 구조
 
 ```
-AiWorkTemplate/
+design-document-by-ai-template/
 ├── docs/                          # 설계 문서
 │   ├── requirements/              # 요구사항
 │   ├── hld/                       # High Level Design
