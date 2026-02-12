@@ -17,5 +17,5 @@ RUN bundle install
 # 포트 노출
 EXPOSE 4000
 
-# Jekyll 서버 실행
-CMD ["bundle", "exec", "jekyll", "serve", "--host", "0.0.0.0", "--livereload", "--force_polling"]
+# Jekyll 서버 실행 (로컬 개발용 설정 오버라이드)
+CMD ["bundle", "exec", "jekyll", "serve", "--host", "0.0.0.0", "--livereload", "--force_polling", "--config", "_config.yml,_config_dev.yml"]

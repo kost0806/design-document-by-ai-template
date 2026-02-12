@@ -4,8 +4,8 @@
 # 사이트 기본 정보
 title: AI 설계 문서 템플릿
 description: AI 기반 소프트웨어 설계 문서 관리 템플릿
-baseurl: "" # GitHub Pages를 사용하는 경우 레포지토리 이름 (예: "/repo-name")
-url: "" # GitHub Pages URL (예: "https://username.github.io")
+baseurl: "/design-document-by-ai-template" # GitHub Pages 레포지토리 이름
+url: "https://kost0806.github.io" # GitHub Pages URL
 
 # 테마 설정
 theme: just-the-docs
@@ -67,12 +67,12 @@ exclude:
 # Just the Docs 테마 커스터마이징
 aux_links:
   "GitHub에서 보기":
-    - "//github.com/your-username/your-repo"
+    - "//github.com/kimmi1206/design-document-by-ai-template"
 
 # 헤더 설정
 gh_edit_link: true
 gh_edit_link_text: "이 페이지 수정하기"
-gh_edit_repository: "https://github.com/your-username/your-repo"
+gh_edit_repository: "https://github.com/kimmi1206/design-document-by-ai-template"
 gh_edit_branch: "main"
 gh_edit_view_mode: "edit"
 

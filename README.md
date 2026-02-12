@@ -153,15 +153,30 @@ graph TD
 
 ## 🛠️ 커스터마이징
 
-### _config.yml 수정
+### _config.yml 수정 (중요!)
+
+**GitHub Pages 배포 전 필수 설정:**
 
 ```yaml
 # docs/_config.yml
 title: 프로젝트 이름
 description: 프로젝트 설명
-baseurl: "/your-repo-name"
-url: "https://your-username.github.io"
+
+# GitHub Pages URL 설정 (레포지토리 이름과 일치해야 함!)
+baseurl: "/your-repo-name"  # ⚠️ 실제 레포지토리 이름으로 변경
+url: "https://your-username.github.io"  # ⚠️ 실제 GitHub username으로 변경
+
+# GitHub 링크 설정
+aux_links:
+  "GitHub에서 보기":
+    - "//github.com/your-username/your-repo"
+
+gh_edit_repository: "https://github.com/your-username/your-repo"
 ```
+
+**로컬 개발 시:**
+- `_config_dev.yml`이 자동으로 적용되어 `baseurl` 없이 작동합니다
+- Docker 또는 `bundle exec jekyll serve` 모두 지원
 
 ### 색상 테마 변경
 
