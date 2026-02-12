@@ -27,6 +27,29 @@ cd AiWorkTemplate
 
 ### 2. 로컬에서 문서 보기
 
+#### 방법 A: Docker 사용 (권장) 🐳
+
+**Windows (PowerShell):**
+```powershell
+.\run-docs.ps1 start
+```
+
+**macOS / Linux:**
+```bash
+./run-docs.sh start
+```
+
+**사용 가능한 명령어:**
+- `start` - 서버 시작
+- `stop` - 서버 중지
+- `restart` - 서버 재시작
+- `logs` - 로그 보기
+- `build` - 이미지 다시 빌드
+- `clean` - 컨테이너/볼륨 삭제
+- `status` - 상태 확인
+
+#### 방법 B: 로컬 Ruby 환경
+
 ```bash
 cd docs
 bundle install
