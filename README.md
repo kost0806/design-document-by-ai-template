@@ -279,12 +279,28 @@ GitHub 레포지토리 **Settings → Secrets and variables → Actions → New 
 
 **Label 추가**: `claude:claude-haiku-4` 또는 `gemini:gemini-flash`
 
-### 주의사항
+### 보안 및 제한사항
 
+#### 접근 제어
+- **Repository 오너만 실행 가능**: Issue 작성자가 Repository 오너인 경우에만 workflow 실행
+- **Concurrency 제한**: Repository당 한 번에 하나의 LLM Agent만 실행 (순차 처리)
+
+#### 사용 제한
+- **Issue body 길이 제한**: 최대 50,000자 (API 비용 남용 방지)
+- **응답 길이 제한**: 최대 60,000자 (GitHub Comment 크기 제한)
+- **실행 시간 제한**: 최대 10분 (timeout 설정)
+- **동시 실행**: GitHub Actions 기본 제한 적용
+
+#### 주의사항
 - API 사용량에 따라 비용이 발생할 수 있습니다
-- 공개 레포지토리에서는 누구나 Label을 추가할 수 있으므로, 필요시 Issue 권한을 제한하세요
-- LLM 응답이 매우 긴 경우 일부가 잘릴 수 있습니다 (최대 60,000자)
-- 잘못된 모델명을 사용하면 GitHub Actions에서 에러가 발생합니다 (Issue Comment에 에러 메시지 표시됨)
+- 공개 레포지토리에서는 누구나 Label을 추가할 수 있으나, Repository 오너만 실행됩니다
+- 잘못된 모델명을 사용하면 에러가 발생합니다 (Issue Comment에 에러 메시지 표시됨)
+
+#### 추가 보안 권장사항
+1. **Private Repository 사용**: API 키 남용 방지
+2. **Issue Template 사용**: 구조화된 입력으로 프롬프트 인젝션 방지
+3. **Label 권한 제한**: Repository Settings에서 Label 추가 권한 제한
+4. **API 사용량 모니터링**: Anthropic/Google Cloud 콘솔에서 사용량 확인
 
 ## 🛠️ 커스터마이징
 
