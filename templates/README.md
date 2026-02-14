@@ -4,12 +4,16 @@
 
 ## 📋 템플릿 목록
 
+0. **[INITIALIZATION.md](../INITIALIZATION.md)** - 프로젝트 초기화 (Agent에게 프로젝트 컨텍스트 전달)
 1. **00-requirements-prompt.md** - 요구사항 분석 프롬프트
 2. **01-hld-prompt.md** - High Level Design 프롬프트
 3. **02-dld-prompt.md** - Detailed Level Design 프롬프트
 4. **03-test-strategy-prompt.md** - 테스트 전략 프롬프트
 
 ## 🚀 사용 방법
+
+### 0단계: 프로젝트 초기화
+[INITIALIZATION.md](../INITIALIZATION.md) 템플릿을 작성하여 AI Agent에게 프로젝트 전체 맥락을 전달하세요.
 
 ### 1단계: 프로젝트 정보 준비
 프롬프트를 사용하기 전에 다음 정보를 준비하세요:
